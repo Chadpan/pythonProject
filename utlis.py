@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import datetime
 
 def nothing(x):
     pass
@@ -17,6 +18,7 @@ def valTrackbars():
     return src
 
 def biggestContour(contours):
+    # start = datetime.datetime.now()
     biggest = np.array([])
     max_area = 0
     for i in contours:
@@ -27,6 +29,9 @@ def biggestContour(contours):
             if area > max_area and len(approx) == 4:
                 biggest = approx
                 max_area = area
+    # end = datetime.datetime.now()
+    # print("筛选最大轮廓函数运行一次时间：")
+    # print(end - start)
     return biggest, max_area
 
 def reorder(myPoints):
@@ -56,6 +61,7 @@ def drawRectangle(img, biggest, thickness):
     return img
 
 def stackImages(imgArray, scale, lables=[]):
+    # start = datetime.datetime.now()
     rows = len(imgArray)
     cols = len(imgArray[0])
     rowsAvailable = isinstance(imgArray[0], list)
@@ -88,11 +94,13 @@ def stackImages(imgArray, scale, lables=[]):
     if len(lables) != 0:
         eachImgWidth = int(ver.shape[1] / cols)
         eachImgHeight = int(ver.shape[0] / rows)
-        print(eachImgHeight)
         for d in range(0, rows):
             for c in range(0, cols):
                 # cv2.rectangle(ver, (c*eachImgWidth, eachImgHeight*d), (c*eachImgWidth+len(
                 #     lables[d])*13+27, 30+eachImgHeight*d), (255, 255, 255), cv2.FILLED)
                 cv2.putText(ver, ''.join(lables[d][c]), (eachImgWidth*c+10, eachImgHeight *
                             d+20), cv2.FONT_HERSHEY_COMPLEX, 0.7, (255, 0, 255), 2)
+    # end = datetime.datetime.now()
+    # print("筛选最大轮廓函数运行一次时间：")
+    # print(end - start)
     return ver
